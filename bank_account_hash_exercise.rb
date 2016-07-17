@@ -11,20 +11,10 @@ class BankAccount
   end
 
   def reject
-    email_last = get_last_email_chars
-    while (!@email.include?("@")) || (email_last != "moc.")
+    while (!@email.include?("@")) || (@email[-4..-1] != ".com")
       puts "Email must include an @ and end with .com! Please enter a valid email:"
       @email = gets.chomp
-      email_last = get_last_email_chars
     end
-  end
-
-  def get_last_email_chars
-    email_last = ""
-    4.times do |n|
-      email_last += "#{@email[@email.length-(1+n)]}"
-    end
-    return email_last
   end
 
   def create_account_number
