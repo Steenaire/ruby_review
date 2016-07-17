@@ -17,23 +17,15 @@ while response != "done"
  students << response
 end
 
-new_students = []
-new_students = students.shuffle
+students = students.shuffle
 n = 0
 group_count = 1
 
-if new_students.length % 2 == 0
- until n >= new_students.length
-   new_students,n,group_count = output_maker(new_students,n,group_count)
- end
-else
-  until n >= new_students.length-3
-    new_students,n,group_count = output_maker(new_students,n,group_count)
+while students.any?
+  if students.length == 3
+    group = students.pop(3)
+  else
+    group = students.pop(2)
   end
-  print "Group #{group_count}: "
-  until n == new_students.length-1
-    print "#{new_students[n]}, "
-    n += 1
-  end
-  print "and #{new_students[n]}\n"
+  puts "Group: #{group.join(', ')}"
 end
