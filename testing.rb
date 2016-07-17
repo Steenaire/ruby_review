@@ -1,6 +1,6 @@
 class Sam
   def recipes
-    return ["Crepe","Ice Cream","Coq au Vin","1","2",3,4,5,6,7,8]
+    return ["Crepe","Ice Cream","Coq au Vin","Pizza","Elderflower Pie","Croissant",4,5,6,7,8]
   end
 end
 

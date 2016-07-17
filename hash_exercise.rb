@@ -6,28 +6,41 @@ class BankAccount
     @first_name = user_hash[:first_name]
     @last_name = user_hash[:last_name]
     @email = user_hash[:email]
-    @account_number = user_hash[:account_number]
+    @account_number = create_account_number
     reject
   end
 
   def reject
+    email_last = get_last_email_chars
+    while (!@email.include?("@")) || (email_last != "moc.")
+      puts "Email must include an @ and end with .com! Please enter a valid email:"
+      @email = gets.chomp
+      email_last = get_last_email_chars
+    end
+  end
+
+  def get_last_email_chars
     email_last = ""
     4.times do |n|
       email_last += "#{@email[@email.length-(1+n)]}"
     end
-    while (!@email.include?("@")) || (email_last != "moc.")
-      puts "Email must include an @ and end with .com! Please enter a valid email:"
-      @email = gets.chomp
-      email_last = ""
-      4.times do |n|
-        email_last += "#{@email[@email.length-(1+n)]}"
-      end
-    end
+    return email_last
+  end
+
+  def create_account_number
+    rand(1000000000..9999999999).to_s
+  end
+
+  def print_info
+    puts "FIRST NAME: #{@first_name}"
+    puts "LAST NAME: #{@last_name}"
+    puts "EMAIL: #{@email}"
+    puts "ACCT #: #{@account_number}"
   end
 
 end
 
-class Bank
+class AccountList
 
   attr_reader :users
 
@@ -43,26 +56,35 @@ class Bank
     end
   end
 
+  def display_users
+    @users.each_with_index do |user, index|
+      puts "ACCOUNT: #{index+1}"
+      user.print_info
+    end
+  end
+
+  def add_account(account)
+    @users << account
+  end
+
 end
 
 users = []
 
-1.times do
+5.times do
   puts "Enter first name:"
   first_name = gets.chomp
   puts "Enter last name:"
   last_name = gets.chomp
   puts "Enter email:"
-  email = gets.chomp
-  users << BankAccount.new({first_name: first_name, last_name: last_name, email: email, account_number: rand(1000000000..9999999999)})
+  email = gets.chomp.downcase
+  users << BankAccount.new(
+    {first_name: first_name,
+      last_name: last_name,
+      email: email,
+      })
 end
 
-users.each do |user|
-  puts "FIRST NAME: #{user.first_name}"
-  puts "LAST NAME: #{user.last_name}"
-  puts "EMAIL: #{user.email}"
-  puts "ACCT #: #{user.account_number}"
-end
-
-bank = Bank.new(users)
+bank = AccountList.new(users)
+bank.display_users
 bank.lookup(users[0].account_number)
