@@ -13,9 +13,8 @@ while response != "done"
  puts "Enter student number #{n} and enter 'done' when done:"
  n += 1
  response = gets.chomp
- if response != "done"
-  students << response
- end
+ break if response == "done"
+ students << response
 end
 
 new_students = []
